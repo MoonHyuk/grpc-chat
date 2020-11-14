@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+package chat;
+
+service Chatting {
+  rpc enter (google.protobuf.StringValue) returns (User) {}
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+}
+
+message Message {
+  string userId = 1;
+  string text = 2;
+}
