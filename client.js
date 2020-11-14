@@ -25,9 +25,11 @@ function main() {
     return;
   }
 
-  client.enter({ value: name }, function (err, response) {
-    const user = response;
-    console.log(`Wellcome ${response.name}!`);
+  const enter = client.enter();
+  enter.write({ value: name });
+
+  enter.on("data", function ({ name }) {
+    console.log(`User ${name} entered!`);
   });
 }
 

@@ -5,7 +5,7 @@ import "google/protobuf/wrappers.proto";
 package chat;
 
 service Chatting {
-  rpc enter (google.protobuf.StringValue) returns (User) {}
+  rpc enter (stream google.protobuf.StringValue) returns (stream User) {}
 }
 
 message User {

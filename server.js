@@ -13,14 +13,18 @@ const chatProto = grpc.loadPackageDefinition(packageDefinition).chat;
 
 let users = [];
 
-function enter(call, callback) {
-  const newUser = {
-    id: users.length + 1,
-    name: call.request.value,
-  };
+function enter(call) {
+  call.on("data", function ({ value: name }) {
+    const newUser = {
+      id: users.length + 1,
+      name,
+    };
 
-  users.push(newUser);
-  callback(null, newUser);
+    users.push({ ...newUser, call });
+    users.forEach(({ call }) => {
+      call.write(newUser);
+    });
+  });
 }
 
 function main() {
