@@ -1,20 +1,9 @@
-const PROTO_PATH = __dirname + "/chat.proto";
-
-const grpc = require("grpc");
-const protoLoader = require("@grpc/proto-loader");
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true,
-});
-const chatProto = grpc.loadPackageDefinition(packageDefinition).chat;
+const { chatProto, grpc } = require("./chatProto");
 
 let users = [];
 
 function enter(call) {
-  call.on("data", function ({ value: name }) {
+  call.on("data", ({ value: name }) => {
     const newUser = {
       id: users.length + 1,
       name,
