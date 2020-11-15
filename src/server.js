@@ -1,4 +1,4 @@
-const { chatProto, grpc } = require("./chatProto");
+const { chatProto, grpc } = require("../proto/chatProto");
 
 let users = [];
 
