@@ -2,25 +2,23 @@ const { chatProto, grpc } = require("./chatProto");
 
 let users = [];
 
-function enter(call) {
-  call.on("data", ({ value: name }) => {
-    const newUser = {
-      id: users.length + 1,
-      name,
-    };
+const communicate = (call) => {
+  call.on("data", ({ newUser, user, text }) => {
+    if (newUser) {
+      users.push(call);
+    }
 
-    users.push({ ...newUser, call });
-    users.forEach(({ call }) => {
-      call.write(newUser);
+    users.forEach((call) => {
+      call.write({ newUser, user, text });
     });
   });
-}
+};
 
-function main() {
+const main = () => {
   const server = new grpc.Server();
-  server.addService(chatProto.Chatting.service, { enter });
+  server.addService(chatProto.Chatting.service, { communicate });
   server.bind("0.0.0.0:50051", grpc.ServerCredentials.createInsecure());
   server.start();
-}
+};
 
 main();
